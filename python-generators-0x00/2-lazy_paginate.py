@@ -1,44 +1,54 @@
-# Mock database of users for simulation
-mock_users_database = [
-    {'id': i, 'name': f'User{i}', 'age': 20 + (i % 15)}  # Ages cycle 20 to 34
-    for i in range(1, 51)  # 50 users total
-]
+#!/usr/bin/python3
+import mysql.connector
+import os
 
 def paginate_users(page_size, offset):
     """
-    Simulates fetching a page of users from the database.
+    Fetch a page of users from the database using LIMIT and OFFSET.
 
     Args:
-        page_size (int): Number of users per page.
-        offset (int): Starting index to fetch users from.
+        page_size (int): Number of users to fetch.
+        offset (int): Offset to start fetching from.
 
     Returns:
-        list: A list of users for the current page.
+        list: List of user dicts.
     """
-    return mock_users_database[offset:offset + page_size]
+    connection = mysql.connector.connect(
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", "root"),
+        password=os.getenv("DB_PASS", ""),
+        database="ALX_prodev"
+    )
+    cursor = connection.cursor(dictionary=True)
+    query = "SELECT * FROM user_data LIMIT %s OFFSET %s"
+    cursor.execute(query, (page_size, offset))
+    results = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return results
 
 def lazy_paginate(page_size):
     """
-    Generator that lazily loads pages of users from the database.
+    Generator that lazily fetches pages of users from the database.
 
     Args:
         page_size (int): Number of users per page.
 
     Yields:
-        list: Next page (batch) of users.
+        list: Next batch of user dicts.
     """
     offset = 0
     while True:
         page = paginate_users(page_size, offset)
-        if not page:  # No more data to fetch
+        if not page:
             break
         yield page
         offset += page_size
 
-
-# Example usage for testing
+# For manual testing (optional)
 if __name__ == "__main__":
-    page_size = 10
-
-    for i, page in enumerate(lazy_paginate(page_size), 1):
-        print(f"Page {i}: {page}\n")
+    for i, page in enumerate(lazy_paginate(5), 1):
+        print(f"Page {i}:")
+        for user in page:
+            print(user)
+        print()
