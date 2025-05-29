@@ -23,7 +23,12 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map: Dict, path: Tuple[str, ...], expected: Any) -> None:
+    def test_access_nested_map(
+            self,
+            nested_map: Dict,
+            path: Tuple[str, ...],
+            expected: Any
+        ) -> None:
         """
         Test access_nested_map returns expected result for given nested_map and path.
         """
@@ -33,7 +38,11 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",)),
         ({"a": 1}, ("a", "b")),
     ])
-    def test_access_nested_map_exception(self, nested_map: Dict, path: Tuple[str, ...]) -> None:
+    def test_access_nested_map_exception(
+            self,
+            nested_map: Dict,
+            path: Tuple[str, ...]
+        ) -> None:
         """
         Test access_nested_map raises KeyError with expected message for invalid keys.
         """
@@ -52,9 +61,15 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False}),
     ])
     @patch("utils.requests.get")
-    def test_get_json(self, test_url: str, test_payload: Dict[str, Any], mock_get: Mock) -> None:
+    def test_get_json(
+            self,
+            test_url: str,
+            test_payload: Dict[str, Any],
+            mock_get: Mock
+        ) -> None:
         """
-        Test get_json returns expected payload and calls requests.get once with correct URL.
+        Test get_json returns expected payload and calls requests.get once with
+        correct URL.
         """
         mock_response = Mock()
         mock_response.json.return_value = test_payload
