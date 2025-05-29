@@ -33,14 +33,12 @@ def mocked_response(payload: Any) -> Any:
     return MockResponse()
 
 
-@parameterized_class([
-    {
-        'org_payload': TEST_PAYLOAD[0][0],
-        'repos_payload': TEST_PAYLOAD[0][1],
-        'expected_repos': TEST_PAYLOAD[0][2],
-        'apache2_repos': TEST_PAYLOAD[0][3]
-    }
-])
+@parameterized_class([{
+    'org_payload': TEST_PAYLOAD[0][0],
+    'repos_payload': TEST_PAYLOAD[0][1],
+    'expected_repos': TEST_PAYLOAD[0][2],
+    'apache2_repos': TEST_PAYLOAD[0][3]
+}])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
     Integration tests for the public_repos method of GithubOrgClient.
@@ -166,6 +164,8 @@ class TestGithubOrgClient(unittest.TestCase):
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
+        ({}, "my_license", False),
+        ({"license": None}, "my_license", False),
     ])
     def test_has_license(
         self,
