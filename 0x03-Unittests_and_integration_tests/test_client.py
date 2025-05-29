@@ -7,9 +7,6 @@ to mock external API calls for consistent testing outcomes.
 """
 
 import unittest
-from typing import Any, Dict
-from unittest.mock import patch, PropertyMock
-from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
 
