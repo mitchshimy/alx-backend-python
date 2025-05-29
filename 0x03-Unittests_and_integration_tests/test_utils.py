@@ -30,7 +30,8 @@ class TestAccessNestedMap(unittest.TestCase):
             expected: Any
     ) -> None:
         """
-        Test access_nested_map returns expected result for given nested_map and path.
+        Test access_nested_map returns expected result for given nested_map
+        and path.
         """
         self.assertEqual(utils.access_nested_map(nested_map, path), expected)
 
@@ -105,7 +106,8 @@ class TestMemoize(unittest.TestCase):
 
         test_instance = TestClass()
 
-        with patch.object(test_instance, "a_method", return_value=42) as mock_method:
+        with patch.object(test_instance, "a_method",
+                          return_value=42) as mock_method:
             result1 = test_instance.a_property
             result2 = test_instance.a_property
 
