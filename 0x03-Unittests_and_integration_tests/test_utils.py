@@ -52,17 +52,18 @@ class TestGetJson(unittest.TestCase):
     Test class for utils.get_json function.
     """
 
+    @patch('utils.requests.get')
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
     ])
-    @patch('utils.requests.get')
     def test_get_json(self,
                       mock_get: Mock,
                       test_url: str,
                       test_payload: Dict[str, Any]) -> None:
         """
-        Test get_json returns expected payload and calls requests.get once with correct URL.
+        Test get_json returns expected payload and calls requests.get once
+        with correct URL.
         """
         mock_response = Mock()
         mock_response.json.return_value = test_payload
