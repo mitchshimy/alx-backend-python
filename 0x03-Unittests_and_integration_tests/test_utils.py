@@ -44,7 +44,8 @@ class TestAccessNestedMap(unittest.TestCase):
             path: Tuple[str, ...]
     ) -> None:
         """
-        Test access_nested_map raises KeyError with expected message for invalid keys.
+        Test access_nested_map raises KeyError with expected message for
+        invalid keys.
         """
         with self.assertRaises(KeyError) as context:
             utils.access_nested_map(nested_map, path)
@@ -88,7 +89,8 @@ class TestMemoize(unittest.TestCase):
 
     def test_memoize(self) -> None:
         """
-        Test that memoize caches the result and calls the decorated method only once.
+        Test that memoize caches the result and calls the decorated method
+        only once.
         """
 
         class TestClass:
