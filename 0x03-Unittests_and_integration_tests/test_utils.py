@@ -23,10 +23,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self,
-                               nested_map: Dict,
-                               path: Tuple[str, ...],
-                               expected: Any) -> None:
+    def test_access_nested_map(self, nested_map: Dict, path: Tuple[str, ...], expected: Any) -> None:
         """
         Test access_nested_map returns expected result for given nested_map and path.
         """
@@ -36,9 +33,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",)),
         ({"a": 1}, ("a", "b")),
     ])
-    def test_access_nested_map_exception(self,
-                                         nested_map: Dict,
-                                         path: Tuple[str, ...]) -> None:
+    def test_access_nested_map_exception(self, nested_map: Dict, path: Tuple[str, ...]) -> None:
         """
         Test access_nested_map raises KeyError with expected message for invalid keys.
         """
@@ -52,18 +47,14 @@ class TestGetJson(unittest.TestCase):
     Test class for utils.get_json function.
     """
 
-    @patch('utils.requests.get')
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
     ])
-    def test_get_json(self,
-                      mock_get: Mock,
-                      test_url: str,
-                      test_payload: Dict[str, Any]) -> None:
+    @patch("utils.requests.get")
+    def test_get_json(self, test_url: str, test_payload: Dict[str, Any], mock_get: Mock) -> None:
         """
-        Test get_json returns expected payload and calls requests.get once
-        with correct URL.
+        Test get_json returns expected payload and calls requests.get once with correct URL.
         """
         mock_response = Mock()
         mock_response.json.return_value = test_payload
@@ -86,8 +77,6 @@ class TestMemoize(unittest.TestCase):
         """
 
         class TestClass:
-            """Test class with a memoized property."""
-
             def a_method(self) -> int:
                 """Method to be mocked."""
                 return 42
@@ -99,10 +88,14 @@ class TestMemoize(unittest.TestCase):
 
         test_instance = TestClass()
 
-        with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
+        with patch.object(test_instance, "a_method", return_value=42) as mock_method:
             result1 = test_instance.a_property
             result2 = test_instance.a_property
 
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
             mock_method.assert_called_once()
+
+
+if __name__ == "__main__":
+    unittest.main()
