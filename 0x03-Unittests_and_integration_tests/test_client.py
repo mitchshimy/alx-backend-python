@@ -2,7 +2,7 @@
 """Test cases for the GithubOrgClient class."""
 
 import unittest
-from unittest.mock import patch, PropertyMock, Mock
+from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -26,12 +26,15 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_get_json.return_value = expected_response
 
         client = GithubOrgClient(org_name)
-        result = client.org
+        
+        # First call
+        self.assertEqual(client.org, expected_response)
+        # Second call should use memoized property
+        self.assertEqual(client.org, expected_response)
 
         mock_get_json.assert_called_once_with(
             f"https://api.github.com/orgs/{org_name}"
         )
-        self.assertEqual(result, expected_response)
 
     @patch('client.GithubOrgClient.org', new_callable=PropertyMock)
     def test_public_repos_url(self, mock_org: PropertyMock) -> None:
