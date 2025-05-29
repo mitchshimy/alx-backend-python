@@ -3,29 +3,27 @@
 
 import unittest
 from unittest.mock import patch, PropertyMock, Mock
-from parameterized import parameterized, parameterized_class
-from typing import Dict, List
+from parameterized import parameterized
 from client import GithubOrgClient
-from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
     """Test cases for the GithubOrgClient class."""
 
     @parameterized.expand([
-        ("google",),
-        ("abc",),
+        ("google", {"login": "google"}),
+        ("abc", {"login": "abc"}),
     ])
     @patch('client.get_json')
-    def test_org(self, org_name: str, mock_get_json: Mock) -> None:
+    def test_org(self, org_name: str, expected_response: dict, mock_get_json: Mock) -> None:
         """Test that GithubOrgClient.org returns the correct value.
         
         Args:
             org_name: The organization name to test
+            expected_response: The expected response from the API
             mock_get_json: Mocked get_json function
         """
-        test_payload = {"login": org_name}
-        mock_get_json.return_value = test_payload
+        mock_get_json.return_value = expected_response
 
         client = GithubOrgClient(org_name)
         result = client.org
@@ -33,7 +31,7 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_get_json.assert_called_once_with(
             f"https://api.github.com/orgs/{org_name}"
         )
-        self.assertEqual(result, test_payload)
+        self.assertEqual(result, expected_response)
 
     @patch('client.GithubOrgClient.org', new_callable=PropertyMock)
     def test_public_repos_url(self, mock_org: PropertyMock) -> None:
