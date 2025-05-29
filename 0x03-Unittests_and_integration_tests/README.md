@@ -1,4 +1,4 @@
-# Holberton School - Python Unit Testing Project
+# Python Unit Testing Project
 
 ## Project Overview
 
