@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('chats.urls')),           # your chats app API routes
     path('api-auth/', include('rest_framework.urls')),  # DRF login/logout views
+    path('api/chats/', include('chats.urls')),
 ]
 
 
