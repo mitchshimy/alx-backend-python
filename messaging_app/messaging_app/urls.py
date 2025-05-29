@@ -18,16 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
 
-def home_view(request):
-    return JsonResponse({
-        "message": "Welcome to the Messaging API",
-        "endpoints": ["/api/conversations/", "/api/messages/", "/admin/"]
-    })
-
 
 urlpatterns = [
-    path('', home_view), 
     path('admin/', admin.site.urls),
-    path('api/', include('chats.urls')),
+    path('api/', include('chats.urls')),           # your chats app API routes
+    path('api-auth/', include('rest_framework.urls')),  # DRF login/logout views
 ]
+
 

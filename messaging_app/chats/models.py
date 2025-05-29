@@ -1,29 +1,30 @@
+import uuid
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
+class User(AbstractUser):
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(unique=True)
 
-# Create your models here.
-# chats/models.py
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
-
-class CustomUser(AbstractUser):
-    # Add any custom fields you need here (optional for now)
-    # Example: phone_number = models.CharField(max_length=15, blank=True, null=True)
-    pass
+    def __str__(self):
+        return self.email
 
 class Conversation(models.Model):
-    participants = models.ManyToManyField('CustomUser', related_name='conversations')
-    created_at = models.DateTimeField(auto_now_add=True)
+    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    users = models.ManyToManyField(User, related_name='conversations')
 
     def __str__(self):
-        return f"Conversation {self.id}"
+        return f"Conversation {self.conversation_id}"
 
 class Message(models.Model):
-    conversation = models.ForeignKey("Conversation", related_name="messages", on_delete=models.CASCADE)
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    message_body = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
 
     def __str__(self):
-        return f"From {self.sender.username}: {self.text[:30]}"
+        return f"Message {self.message_id} from {self.sender.email}"
