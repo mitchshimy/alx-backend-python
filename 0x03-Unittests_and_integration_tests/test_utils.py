@@ -28,7 +28,7 @@ class TestAccessNestedMap(unittest.TestCase):
             nested_map: Dict,
             path: Tuple[str, ...],
             expected: Any
-        ) -> None:
+    ) -> None:
         """
         Test access_nested_map returns expected result for given nested_map and path.
         """
@@ -42,7 +42,7 @@ class TestAccessNestedMap(unittest.TestCase):
             self,
             nested_map: Dict,
             path: Tuple[str, ...]
-        ) -> None:
+    ) -> None:
         """
         Test access_nested_map raises KeyError with expected message for invalid keys.
         """
@@ -66,7 +66,7 @@ class TestGetJson(unittest.TestCase):
             test_url: str,
             test_payload: Dict[str, Any],
             mock_get: Mock
-        ) -> None:
+    ) -> None:
         """
         Test get_json returns expected payload and calls requests.get once with
         correct URL.
