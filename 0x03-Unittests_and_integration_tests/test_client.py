@@ -82,6 +82,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         the mocked repos_payload fixture.
         """
         client = GithubOrgClient("google")
+        # Line 63 was here, now adjusted below:
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self) -> None:
