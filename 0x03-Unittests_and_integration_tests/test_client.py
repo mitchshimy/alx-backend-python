@@ -60,7 +60,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         mock_get = cls.get_patcher.start()
 
         def side_effect(url: str) -> Any:
-            """Return a mocked response depending on the API endpoint called."""
+            """Return mocked response depending on API endpoint called."""
             if url.endswith("/orgs/google"):
                 return mocked_response(cls.org_payload)
             if url.endswith("/orgs/google/repos"):
