@@ -7,7 +7,7 @@ to mock external API calls for consistent testing outcomes.
 """
 
 import unittest
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
@@ -19,11 +19,12 @@ def mocked_response(payload: Any) -> Any:
     Helper function to create a mock response object for requests.get().json().
 
     Args:
-        payload (Any): The data payload that will be returned by the mock json().
+        payload (Any): The data payload returned by the mock json().
 
     Returns:
         MockResponse: A mock response object with a json() method.
     """
+
     class MockResponse:
         def json(self_inner) -> Any:
             """Return the preset payload."""
@@ -62,7 +63,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             """Return a mocked response depending on the API endpoint called."""
             if url.endswith("/orgs/google"):
                 return mocked_response(cls.org_payload)
-            elif url.endswith("/orgs/google/repos"):
+            if url.endswith("/orgs/google/repos"):
                 return mocked_response(cls.repos_payload)
             return mocked_response(None)
 
@@ -70,9 +71,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        """
-        Class-level teardown method to stop patching requests.get.
-        """
+        """Stop patching requests.get."""
         cls.get_patcher.stop()
 
     def test_public_repos(self) -> None:
