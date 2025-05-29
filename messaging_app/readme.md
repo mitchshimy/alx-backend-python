@@ -49,7 +49,7 @@ Upon completing this project, you will:
   django-admin startproject myproject
   python manage.py startapp core
   `settings.py` Configuration
-```
+  ```
 
 - Add core apps to `INSTALLED_APPS`
 - Configure middleware as needed
