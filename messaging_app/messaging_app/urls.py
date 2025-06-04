@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from chats.auth import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -27,4 +28,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),    # Optional: DRF browsable API login/logout
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT access + refresh
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # JWT refresh only
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
 ]
