@@ -8,17 +8,21 @@ from .permissions import IsParticipantOfConversation  # ✅ import permission
 from rest_framework.permissions import IsAuthenticated
 from .filters import MessageFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.exceptions import NotAuthenticated
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated, IsParticipantOfConversation]  # ✅ apply
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['conversation_id']
 
     def get_queryset(self):
-        return Conversation.objects.filter(participants=self.request.user)
+        user = self.request.user
+        if not user or not user.is_authenticated:
+            raise NotAuthenticated("You must be authenticated to access conversations.")
+        return Conversation.objects.filter(participants=user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
