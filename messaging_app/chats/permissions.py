@@ -27,4 +27,4 @@ class IsParticipantOfConversation(BasePermission):
         else:
             # For PUT, PATCH, DELETE allow only if user is participant
             return is_participant
-
+_ = permissions  # reference to avoid unused import warning
