@@ -3,12 +3,12 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.status import HTTP_403_FORBIDDEN
-
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from .permissions import IsParticipantOfConversation
 from .filters import MessageFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from .pagination import MessagePagination
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -52,6 +52,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    pagination_class = MessagePagination
     permission_classes = [IsAuthenticated, IsParticipantOfConversation]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = MessageFilter
