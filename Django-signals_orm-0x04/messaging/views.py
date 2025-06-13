@@ -51,3 +51,11 @@ def threaded_conversation(request, message_id):
     }
 
     return render(request, 'messaging/thread.html', {'thread': thread})
+
+@login_required
+def sent_messages(request):
+    messages = Message.objects.filter(
+        sender=request.user, parent_message__isnull=True
+    ).select_related('receiver').prefetch_related('replies')
+
+    return render(request, 'messaging/sent_messages.html', {'messages': messages})
