@@ -5,9 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model
 from .models import Message
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 User = get_user_model()
-
+@cache_page(60)
 @login_required
 def delete_user(request):
     user = request.user
