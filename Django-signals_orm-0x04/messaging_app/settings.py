@@ -41,7 +41,6 @@ INSTALLED_APPS = [
         # Third-party apps
     'rest_framework',
     'chats',
-    'django_chat'
     'messaging',
     'rest_framework_simplejwt',
     'django_filters',
