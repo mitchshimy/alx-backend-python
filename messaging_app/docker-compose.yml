@@ -2,12 +2,13 @@ version: '3.8'
 
 services:
   db:
-    image: mysql:8.0
+    image: mysql:5.7
+    restart: always
     environment:
-      MYSQL_DATABASE: messaging_db
-      MYSQL_USER: messaging_user
-      MYSQL_PASSWORD: messaging_pass
-      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
       - db_data:/var/lib/mysql
     ports:
@@ -20,10 +21,10 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     env_file:
       - .env
+    depends_on:
+      - db
 
 volumes:
   db_data:
