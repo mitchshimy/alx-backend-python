@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql   # ✅ Persist data here
     ports:
       - "3306:3306"
 
@@ -26,5 +26,6 @@ services:
     depends_on:
       - db
 
+# ✅ Declare the volume here
 volumes:
   db_data:
