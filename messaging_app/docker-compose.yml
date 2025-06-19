@@ -26,6 +26,5 @@ services:
     depends_on:
       - db
 
-# ✅ Declare the volume here
 volumes:
   db_data:
