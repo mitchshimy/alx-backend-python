@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Description: Perform a rolling update on blue deployment to v2.0
+
+echo "📦 Applying updated deployment..."
+kubectl apply -f blue_deployment.yaml
+
+echo "🔄 Monitoring rolling update status..."
+kubectl rollout status deployment/django-blue
+
+echo "🚀 Sending requests to check for downtime (10 requests, 1/s)..."
+for i in {1..10}; do
+  echo -n "Request $i: "
+  curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/
+  sleep 1
+done
+
+echo "📋 Checking current running pods..."
+kubectl get pods -l app=django,version=blue
