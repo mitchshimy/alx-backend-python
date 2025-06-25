@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Deploy both blue and green versions
+echo "🚀 Deploying blue version..."
+kubectl apply -f blue_deployment.yaml
+
+echo "🚀 Deploying green version..."
+kubectl apply -f green_deployment.yaml
+
+echo "🔁 Applying Kubernetes service (currently pointing to green)..."
+kubectl apply -f kubeservice.yaml
+
+# Wait a bit for pods to start
+echo "⏳ Waiting for pods to initialize..."
+sleep 10
+
+echo "📋 Listing pods:"
+kubectl get pods -l app=django
+
+echo "🔍 Checking logs for green version:"
+GREEN_POD=$(kubectl get pods -l version=green -o jsonpath="{.items[0].metadata.name}")
+kubectl logs "$GREEN_POD"
