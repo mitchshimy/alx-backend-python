@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Script: kubctl-0x01
+# Description: Scale Django deployment, verify pods, run load test, monitor usage
+
+echo "🔁 Scaling Django app deployment to 3 replicas..."
+kubectl scale deployment django-app --replicas=3
+
+echo "⏳ Waiting for pods to stabilize..."
+sleep 10
+
+echo "📦 Current running pods:"
+kubectl get pods
+
+echo "📊 Resource usage per pod:"
+kubectl top pods
+
+echo "⚡ Performing load test using wrk (ensure wrk is installed)..."
+echo "Example test: 10 seconds, 10 threads, 100 connections"
+wrk -t10 -c100 -d10s http://<YOUR-APP-CLUSTER-IP>:8000/
+
+echo "✅ Done."
