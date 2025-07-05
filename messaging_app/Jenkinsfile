@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        VENV_DIR = 'venv'
+    }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git credentialsId: 'github-creds', url: 'https://github.com/YOUR_USERNAME/alx-backend-python.git'
+            }
+        }
+
+        stage('Set Up Python Env & Install Deps') {
+            steps {
+                sh '''
+                    cd messaging_app
+                    python3 -m venv $VENV_DIR
+                    . $VENV_DIR/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    cd messaging_app
+                    . $VENV_DIR/bin/activate
+                    pytest --junitxml=report.xml
+                '''
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                junit 'messaging_app/report.xml'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo '✅ Pipeline finished.'
+        }
+    }
+}
